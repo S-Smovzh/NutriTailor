@@ -1,26 +1,177 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Container, Row, Spinner } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import Cookies from 'universal-cookie';
+import {
+  Attribution,
+  DietDetails,
+  ForgotPassword,
+  MealListPage,
+  MealPage,
+  Profile,
+  ResetPassword,
+  SignIn,
+  SignUp,
+  Welcome,
+  SuggestedMealsListPage,
+} from './pages';
+import { CustomNavbar, GuardedRoute, NotFoundRoute, PublicRoute } from './components';
+import { UserSlice } from './store';
+import { Pages, SupportedLanguages } from './enums';
+import './App.scss';
+import { apiRequest, handleApiError, handleError } from './utils';
+import { toastr } from 'react-redux-toastr';
 
-function App() {
+const cookies = new Cookies();
+
+const App = () => {
+  const location = useLocation();
+  const [search] = useSearchParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  const { reloadUser } = UserSlice.actions;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    try {
+      const user = JSON.parse(window.atob(cookies.get('user')));
+      dispatch(reloadUser(user));
+    } catch (err) {
+      console.error("Couldn't parse cookie");
+      cookies.remove('user');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [cookies]);
+
+  useEffect(() => {
+    (async () => {
+      if (location.pathname.includes('verify-email')) {
+        try {
+          const response = await apiRequest(`/user/activate-account?isEmailVerification=true&activationToken=${search.get('token')}`, {
+            method: 'PATCH',
+          });
+
+          if (!response.data.success) {
+            return handleApiError(response.data);
+          }
+          toastr.success('Success', 'Account activated! Now you can log in.');
+          navigate('/sign-in');
+        } catch (error) {
+          handleError('ACCOUNT_ACTIVATION', error);
+          toastr.error('Error', 'Failed to activate account. Use the link from email one more time.');
+        }
+      }
+    })();
+  }, [location]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="d-flex flex-column flex-nowrap h-100 w-100">
+      <CustomNavbar />
+      <Container className="pt-2 content d-flex align-content-center justify-content-center">
+        {isLoading && (
+          <Row className="my-5 w-100 align-items-center justify-content-center">
+            <Spinner color="primary" />
+          </Row>
+        )}
+        {!isLoading && (
+          <Routes>
+            <Route
+              path={Pages.DIET_DETAILS}
+              element={
+                <GuardedRoute>
+                  <DietDetails />
+                </GuardedRoute>
+              }
+            />
+            <Route
+              path={Pages.DIET_PLANNING}
+              element={
+                <GuardedRoute>
+                  <SuggestedMealsListPage />
+                </GuardedRoute>
+              }
+            />
+            <Route
+              path={Pages.PROFILE}
+              element={
+                <GuardedRoute>
+                  <Profile />
+                </GuardedRoute>
+              }
+            />
+            <Route
+              path={Pages.ATTRIBUTION}
+              element={
+                <PublicRoute>
+                  <Attribution />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.FORGOT_PASSWORD}
+              element={
+                <PublicRoute>
+                  <ForgotPassword />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.MEAL}
+              element={
+                <PublicRoute>
+                  <MealPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.MEALS_LIST}
+              element={
+                <PublicRoute>
+                  <MealListPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.RESET_PASSWORD}
+              element={
+                <PublicRoute>
+                  <ResetPassword />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.WELCOME}
+              element={
+                <PublicRoute>
+                  <Welcome />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.SIGN_UP}
+              element={
+                <PublicRoute>
+                  <SignUp />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.SIGN_IN}
+              element={
+                <PublicRoute>
+                  <SignIn />
+                </PublicRoute>
+              }
+            />
+            <Route path="*" element={<NotFoundRoute />} />
+          </Routes>
+        )}
+      </Container>
     </div>
   );
-}
+};
 
 export default App;
