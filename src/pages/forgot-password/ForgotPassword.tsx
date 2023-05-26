@@ -1,13 +1,10 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { FormGroup, Label, Input, Button, FormFeedback, Col } from 'reactstrap';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { toastr } from 'react-redux-toastr';
-import { apiRequest } from '../../utils/api-request';
-import { handleApiError } from '../../utils';
 import { useNavigate } from 'react-router-dom';
-import { handleError } from '../../utils/handle-error';
+import { Button, Col, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { toastr } from 'react-redux-toastr';
+import { handleApiError, handleError, apiRequest } from '../../utils';
 
 interface ForgotPasswordFormValues {
   email: string;

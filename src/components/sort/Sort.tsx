@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label } from 'reactstrap';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Label } from 'reactstrap';
 
 type SortProps = {
   options: string[];

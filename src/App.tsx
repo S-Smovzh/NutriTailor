@@ -13,12 +13,12 @@ import {
   ResetPassword,
   SignIn,
   SignUp,
-  Welcome,
   SuggestedMealsListPage,
+  Welcome,
 } from './pages';
 import { CustomNavbar, GuardedRoute, NotFoundRoute, PublicRoute } from './components';
 import { UserSlice } from './store';
-import { Pages, SupportedLanguages } from './enums';
+import { Pages } from './enums';
 import './App.scss';
 import { apiRequest, handleApiError, handleError } from './utils';
 import { toastr } from 'react-redux-toastr';

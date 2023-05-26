@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBody, CardImg, CardText, CardTitle, Col, List, ListInlineItem, Row } from 'reactstrap';
+import { Card, CardBody, CardImg, CardTitle, Col, List, ListInlineItem, Row } from 'reactstrap';
 import { Meal } from '../../types';
 import { Link } from 'react-router-dom';
 import { Pages } from '../../enums';

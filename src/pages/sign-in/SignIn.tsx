@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Button, Col, FormFeedback, FormGroup, Input, InputGroup, Label, Row } from 'reactstrap';
 import * as Yup from 'yup';
-import axios from 'axios';
-import { handleError } from '../../utils/handle-error';
 import { toastr } from 'react-redux-toastr';
-import { apiRequest } from '../../utils/api-request';
-import { handleApiError } from '../../utils';
-import { Link, useNavigate } from 'react-router-dom';
+import { apiRequest, handleError, handleApiError } from '../../utils';
 import { UserSlice } from '../../store';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/interfaces';
@@ -38,7 +35,14 @@ const SignIn: React.FC = () => {
     if (user._id) navigate(Pages.MEALS_LIST);
   }, [user]);
 
-  const handleSubmit = async (values: typeof initialValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
+  const handleSubmit = async (
+    values: typeof initialValues,
+    {
+      setSubmitting,
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+    }
+  ) => {
     try {
       const response = await apiRequest('/user/sign-in', { method: 'POST', data: values });
 

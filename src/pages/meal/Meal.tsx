@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Col, List, ListInlineItem, Row, Spinner } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Row, Spinner } from 'reactstrap';
 import { toastr } from 'react-redux-toastr';
 import { apiRequest, handleApiError, handleError } from '../../utils';
 import { Meal } from '../../types';

@@ -1,14 +1,11 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { FormGroup, Label, Input, Button, FormFeedback, Col } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Button, Col, FormFeedback, FormGroup, Input, Label } from 'reactstrap';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
 import { useParams } from 'react-router';
-import { handleError } from '../../utils/handle-error';
-import { apiRequest } from '../../utils/api-request';
-import { handleApiError } from '../../utils';
-import { useNavigate } from 'react-router-dom';
+import { handleApiError, apiRequest, handleError } from '../../utils';
 
 interface ResetPasswordFormValues {
   password: string;
@@ -30,7 +27,10 @@ const ResetPassword: React.FC = () => {
 
   const handleSubmit = async (values: ResetPasswordFormValues) => {
     try {
-      const response = await apiRequest(`/user/reset-password?resetToken=${resetToken}`, { method: 'PATCH', data: values });
+      const response = await apiRequest(`/user/reset-password?resetToken=${resetToken}`, {
+        method: 'PATCH',
+        data: values,
+      });
 
       if (response.data.message) {
         return handleApiError(response.data);
