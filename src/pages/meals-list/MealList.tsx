@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Spinner, Row, Col, Label, Input } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Col, Input, Label, Spinner } from 'reactstrap';
 import { toastr } from 'react-redux-toastr';
 import { Meals, PageSize, Sort } from '../../components';
 import { apiRequest, handleApiError, handleError } from '../../utils';
@@ -25,7 +25,10 @@ const MealListPage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [filter, setFilter] = useState('');
-  const [sort, setSort] = useState<{ name: SORTING_OPTIONS; direction: 1 | -1 }>({ name: SORTING_OPTIONS.NAME, direction: 1 });
+  const [sort, setSort] = useState<{ name: SORTING_OPTIONS; direction: 1 | -1 }>({
+    name: SORTING_OPTIONS.NAME,
+    direction: 1,
+  });
 
   useEffect(() => {
     (async () => {
