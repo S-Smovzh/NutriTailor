@@ -1,6 +1,6 @@
 export * from './attribution';
 export * from './diet-details';
-export * from './diet-planing';
+export * from './suggested-meals';
 export * from './forgot-password';
 export * from './meal';
 export * from './meals-list';

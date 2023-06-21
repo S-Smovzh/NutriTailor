@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Col, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
-import { PasswordChangeForm, ProductList, RegistrationInfoForm, SuggestedMealsListPage } from './components';
 import { Link } from 'react-router-dom';
+import { PasswordChangeForm, ProductList, RegistrationInfoForm } from './components';
 import { Pages } from '../../enums';
+import { Product } from '../../types';
+import { SuggestedMealsListPage } from '../suggested-meals';
 
 enum ProfileTabs {
   REGISTRATION_DATA = 'REGISTRATION_DATA',
@@ -12,6 +14,7 @@ enum ProfileTabs {
 
 const Profile: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ProfileTabs>(ProfileTabs.REGISTRATION_DATA);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const toggleTab = (tab: ProfileTabs) => {
     if (activeTab !== tab) {
@@ -20,7 +23,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <Row>
+    <Row className="w-100">
       <Col>
         <Nav tabs>
           <NavItem>
@@ -40,9 +43,9 @@ const Profile: React.FC = () => {
           </NavItem>
         </Nav>
 
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId={ProfileTabs.REGISTRATION_DATA}>
-            <Col>
+        <TabContent activeTab={activeTab} className="py-3">
+          <TabPane tabId={ProfileTabs.REGISTRATION_DATA} className="d-flex align-items-center justify-content-center">
+            <Col className="w-50 d-flex flex-column align-items-center justify-content-center gap-5">
               <RegistrationInfoForm />
               <PasswordChangeForm />
               <Row>
@@ -51,7 +54,7 @@ const Profile: React.FC = () => {
             </Col>
           </TabPane>
           <TabPane tabId={ProfileTabs.PRODUCTS_LIST}>
-            <ProductList />
+            <ProductList products={products} setProducts={setProducts} />
           </TabPane>
           <TabPane tabId={ProfileTabs.SUGGESTED_MEALS}>
             <SuggestedMealsListPage />

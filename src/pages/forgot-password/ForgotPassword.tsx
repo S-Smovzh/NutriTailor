@@ -21,7 +21,7 @@ const ForgotPassword: React.FC = () => {
 
   const handleSubmit = async (values: ForgotPasswordFormValues) => {
     try {
-      const response = await apiRequest('/user/forgot-password', { method: 'PATCH', data: values });
+      const response = await apiRequest('/user/reset-password', { method: 'PATCH', data: values }, true);
 
       if (response.data.message) {
         return handleApiError(response.data);

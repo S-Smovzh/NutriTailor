@@ -7,14 +7,14 @@ import { Meal } from '../../types';
 
 enum SORTING_OPTIONS {
   COOKING_TIME = 'Est. Cooking Time',
-  COMPLEXITY = 'Complexity',
+  // COMPLEXITY = 'Complexity',
   NAME = 'Name',
   CATEGORY = 'Category',
 }
 
 enum SORTING_OPTIONS_KEYS {
-  'Est. Cooking Time' = 'estimatedCookingTimeMinutes',
-  Complexity = 'complexity',
+  'Est. Cooking Time' = 'estimatedCookingTimeInt',
+  // Complexity = 'complexity',
   Name = 'name',
   Category = 'category',
 }
@@ -33,7 +33,7 @@ const MealListPage: React.FC = () => {
   useEffect(() => {
     (async () => {
       const items = await onRequest();
-      if (items) {
+      if (items && items.length) {
         setMeals(items);
       }
     })();
@@ -51,7 +51,7 @@ const MealListPage: React.FC = () => {
   const onRequest = async () => {
     try {
       const response = await apiRequest(
-        `/meal?filter=${JSON.stringify(filter)}&sort=${JSON.stringify({ [SORTING_OPTIONS_KEYS[sort.name]]: sort.direction })}&skip=${
+        `/meal/?filter=${JSON.stringify(filter)}&sort=${JSON.stringify({ [SORTING_OPTIONS_KEYS[sort.name]]: sort.direction })}&skip=${
           (page - 1) * itemsPerPage
         }&limit=${itemsPerPage}`
       );

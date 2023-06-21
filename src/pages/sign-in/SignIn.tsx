@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Button, Col, FormFeedback, FormGroup, Input, InputGroup, Label, Row } from 'reactstrap';
 import * as Yup from 'yup';
@@ -112,8 +112,9 @@ const SignIn: React.FC = () => {
         )}
       </Formik>
       <Button color="dark" onClick={onSignUpNavigation}>
-        Or create a new account{' '}
+        Or create a new account
       </Button>
+      <Link to={Pages.FORGOT_PASSWORD}>Forgot Password?</Link>
     </Col>
   );
 };

@@ -4,6 +4,9 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toastr } from 'react-redux-toastr';
 import * as Yup from 'yup';
 import { apiRequest, handleApiError, handleError } from '../../../utils';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../../store/interfaces';
+import { UserSlice } from '../../../store';
 
 interface RegistrationInfoFormValues {
   firstName: string;
@@ -33,12 +36,26 @@ const initialValues: RegistrationInfoFormValues = {
 };
 
 const RegistrationInfoForm = () => {
+  const dispatch = useDispatch();
+  const { loginReducer } = UserSlice.actions;
+
+  const {
+    user: { refreshToken, token, _id, dietPlan, preferredLanguage, ...user },
+  } = useSelector(
+    (state: AppState) => ({
+      user: state.user,
+    }),
+    shallowEqual
+  );
+
   const handleSubmit = async (values: RegistrationInfoFormValues) => {
     try {
       const response = await apiRequest('/user', { method: 'PATCH', data: values });
 
       if (response.data.message) {
         return handleApiError(response.data);
+      } else {
+        dispatch(loginReducer({ ...response.data, token, refreshToken }));
       }
       toastr.success('Success', 'Account u[dated!');
     } catch (error) {
@@ -48,8 +65,9 @@ const RegistrationInfoForm = () => {
   };
 
   return (
-    <Row>
-      <Formik initialValues={initialValues} validationSchema={RegistrationInfoFormSchema} onSubmit={handleSubmit}>
+    <Row className="w-50">
+      <h2 className="mb-3">Personal Details</h2>
+      <Formik initialValues={user ?? initialValues} validationSchema={RegistrationInfoFormSchema} onSubmit={handleSubmit}>
         {({ errors, touched }) => (
           <Form>
             <Row>

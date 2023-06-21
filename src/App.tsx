@@ -4,6 +4,7 @@ import { Container, Row, Spinner } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import Cookies from 'universal-cookie';
 import {
+  SuggestedMealsListPage,
   Attribution,
   DietDetails,
   ForgotPassword,
@@ -13,7 +14,6 @@ import {
   ResetPassword,
   SignIn,
   SignUp,
-  SuggestedMealsListPage,
   Welcome,
 } from './pages';
 import { CustomNavbar, GuardedRoute, NotFoundRoute, PublicRoute } from './components';
@@ -50,9 +50,13 @@ const App = () => {
     (async () => {
       if (location.pathname.includes('verify-email')) {
         try {
-          const response = await apiRequest(`/user/activate-account?isEmailVerification=true&activationToken=${search.get('token')}`, {
-            method: 'PATCH',
-          });
+          const response = await apiRequest(
+            `/user/activate-account?isEmailVerification=true&activationToken=${search.get('token')}`,
+            {
+              method: 'PATCH',
+            },
+            true
+          );
 
           if (!response.data.success) {
             return handleApiError(response.data);
@@ -91,14 +95,6 @@ const App = () => {
               element={
                 <GuardedRoute>
                   <SuggestedMealsListPage />
-                </GuardedRoute>
-              }
-            />
-            <Route
-              path={Pages.PROFILE}
-              element={
-                <GuardedRoute>
-                  <Profile />
                 </GuardedRoute>
               }
             />
@@ -164,6 +160,14 @@ const App = () => {
                 <PublicRoute>
                   <SignIn />
                 </PublicRoute>
+              }
+            />
+            <Route
+              path={Pages.PROFILE}
+              element={
+                <GuardedRoute>
+                  <Profile />
+                </GuardedRoute>
               }
             />
             <Route path="*" element={<NotFoundRoute />} />

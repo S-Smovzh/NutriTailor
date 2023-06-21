@@ -67,6 +67,7 @@ const SignUp: React.FC = () => {
       const response = await apiRequest('/user/sign-up', {
         method: 'POST',
         data: { ...values, preferredLanguage: SupportedLanguages.EN, dietPlan: user.dietPlan },
+        timeout: 50000,
       });
 
       if (response.data.message) {

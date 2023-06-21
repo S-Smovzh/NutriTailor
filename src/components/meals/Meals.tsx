@@ -11,8 +11,8 @@ type MealsProps = {
 const Meals = ({ meals }: MealsProps) => (
   <Row>
     {!!meals.length &&
-      meals.map(({ _id, images, name, nutritionScore, linkToOriginal, tags, category, estimatedCookingTimeMinutes, complexity, ingredients }) => (
-        <Col key={_id ?? name} md={4} className="d-flex align-items-stretch">
+      meals.map(({ _id, images, name, nutritionScore, linkToOriginal, tags, category, estimatedCookingTimeMinutes, complexity, ingredients }, index) => (
+        <Col key={`${_id ?? name}-${index}-${category}`} md={4} className="d-flex align-items-stretch">
           <Link to={Pages.MEAL.replace(':mealId', _id)} className="d-flex text-decoration-none">
             <Card className="mb-3 text-dark">
               <CardBody>

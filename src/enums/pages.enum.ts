@@ -6,7 +6,7 @@ enum Pages {
   MEAL = '/meals/:mealId',
   MEALS_LIST = '/meals',
   PROFILE = '/profile',
-  RESET_PASSWORD = '/reset-password/:resetToken',
+  RESET_PASSWORD = '/reset-password',
   WELCOME = '/welcome',
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',

@@ -18,7 +18,7 @@ const CustomNavbar = () => {
   );
 
   const logout = () => {
-    dispatch(logoutReducer);
+    dispatch(logoutReducer());
     navigate(Pages.SIGN_IN);
   };
 
@@ -62,7 +62,7 @@ const CustomNavbar = () => {
         )}
         {!user._id && (
           <NavItem>
-            <NavLink href={Pages.MEALS_LIST}>Sign In</NavLink>
+            <NavLink href={Pages.SIGN_IN}>Sign In</NavLink>
           </NavItem>
         )}
       </Nav>
